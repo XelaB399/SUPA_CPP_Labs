@@ -1,0 +1,2 @@
+Fitted line: y = 0.126266x + 2.02628
+Chi2 value: 791244
