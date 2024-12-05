@@ -1,15 +1,19 @@
 #include <string>
 #include <vector>
+#include <cmath>
 #include "gnuplot-iostream.h"
 
 #pragma once //Replacement for IFNDEF
 
+//////////////////////////////////////// 
+////////////////////////////////////////
 class FiniteFunction{
 
 public:
   FiniteFunction(); //Empty constructor
   FiniteFunction(double range_min, double range_max, std::string outfile); //Variable constructor
   ~FiniteFunction(); //Destructor
+
   double rangeMin(); //Low end of the range the function is defined within
   double rangeMax(); //High end of the range the function is defined within
   double integral(int Ndiv = 1000); 
@@ -46,4 +50,58 @@ protected:
   
 private:
   double invxsquared(double x); //The default functional form
+};
+//////////////////////////////////////// 
+////////////////////////////////////////
+
+//Defining Child classes of FiniteFunction
+class NormalFunction : public FiniteFunction {
+public:
+    //Constructors
+    NormalFunction(); // Default constructor
+    NormalFunction(double min_range, double max_range, std::string outfile, double stddev, double mean); // Variable constructor 
+    
+    //Setters
+    void setStdDev(std::vector<double> data, double mean);
+    void setMean(std::vector<double> data);
+
+    virtual double callFunction(double x) override; // overriding the callFunction from FiniteFunction
+    virtual void printInfo() override; // overriding the printInfo from FiniteFunction
+
+    //Getters
+    double getStdDev();
+    double getMean();
+
+protected:
+    double m_stddev;
+    double m_mean;
+
+private:
+    double normalDistribution(double x);
+};
+
+
+class CauchyLorentzFunction : public FiniteFunction {
+public:
+    //Constructors
+    CauchyLorentzFunction(); // Default constructor
+    CauchyLorentzFunction(double min_range, double max_range, std::string outfile, double stddev, double mean); // Variable constructor 
+    
+    //Setters
+    void setStdDev(std::vector<double> data, double mean);
+    void setMean(std::vector<double> data);
+
+    virtual double callFunction(double x) override; // overriding the callFunction from FiniteFunction
+    virtual void printInfo() override; // overriding the printInfo from FiniteFunction
+
+    //Getters
+    double getStdDev();
+    double getMean();
+
+protected:
+    double m_stddev;
+    double m_mean;
+
+private:
+    double normalDistribution(double x);
 };

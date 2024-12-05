@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cmath>
 #include "FiniteFunctions.h"
 #include <filesystem> //To check extensions in a nice way
 
@@ -14,6 +15,11 @@ FiniteFunction::FiniteFunction(){
   m_RMax = 5.0;
   this->checkPath("DefaultFunction");
   m_Integral = NULL;
+}
+NormalFunction::NormalFunction() : FiniteFunction() {
+    m_stddev = 1.0;
+    m_mean = 0.0;
+    this->checkPath("NormalFunction");
 }
 
 //initialised constructor
@@ -38,6 +44,19 @@ FiniteFunction::~FiniteFunction(){
 */ 
 void FiniteFunction::setRangeMin(double RMin) {m_RMin = RMin;};
 void FiniteFunction::setRangeMax(double RMax) {m_RMax = RMax;};
+
+void NormalFunction::setStdDev(std::vector<double> data, double mean) {
+    double variance = 0.0;
+    for (double value : data) {
+        variance += std::pow(value - mean, 2);
+    }
+  m_stddev = std::sqrt(variance / data.size());}
+
+void NormalFunction::setMean(std::vector<double> data) {
+    double sum = 0.0;
+    for (double value : data) {sum += value;}
+  m_mean = sum / data.size();}
+
 void FiniteFunction::setOutfile(std::string Outfile) {this->checkPath(Outfile);};
 
 /*
@@ -48,6 +67,9 @@ void FiniteFunction::setOutfile(std::string Outfile) {this->checkPath(Outfile);}
 double FiniteFunction::rangeMin() {return m_RMin;};
 double FiniteFunction::rangeMax() {return m_RMax;};
 
+double NormalFunction::getStdDev() {return m_stddev;};
+double NormalFunction::getMean() {return m_mean;};
+
 /*
 ###################
 //Function eval
@@ -56,15 +78,31 @@ double FiniteFunction::rangeMax() {return m_RMax;};
 double FiniteFunction::invxsquared(double x) {return 1/(1+x*x);};
 double FiniteFunction::callFunction(double x) {return this->invxsquared(x);}; //(overridable)
 
+//Normal Distribution
+double NormalFunction::normalDistribution(double x) {
+double A = 1/(m_stddev*sqrt(2*M_PI));
+double B = ((x-m_mean)*(x-m_mean))/(m_stddev*m_stddev);
+double C = exp(-0.5*B);
+return A*C;}
+double NormalFunction::callFunction(double x) {return this->normalDistribution(x);}; 
+
 /*
 ###################
 Integration by hand (output needed to normalise function when plotting)
 ###################
 */ 
 double FiniteFunction::integrate(int Ndiv){ //private
-  //ToDo write an integrator
-  return -99;  
+  //trapezium rule 
+  double step = (m_RMax - m_RMin)/(double)Ndiv; //Step size for integration (h)
+  double x = m_RMin;                            //Start at the lower bound
+  double sum = 0;                               //Initialising sum
+  for (int i = 0; i < Ndiv; i++){               //Loop over the number of divisions
+    sum += ((this->callFunction(x) + this->callFunction(x+step))/2)*step;   //Add the area of the trapezium to the total
+    x = x + step;
+  }
+  return sum;                                //Return the total area under the curve
 }
+
 double FiniteFunction::integral(int Ndiv) { //public
   if (Ndiv <= 0){
     std::cout << "Invalid number of divisions for integral, setting Ndiv to 1000" <<std::endl;
@@ -95,6 +133,15 @@ void FiniteFunction::checkPath(std::string outfile){
 void FiniteFunction::printInfo(){
   std::cout << "rangeMin: " << m_RMin << std::endl;
   std::cout << "rangeMax: " << m_RMax << std::endl;
+  std::cout << "integral: " << m_Integral << ", calculated using " << m_IntDiv << " divisions" << std::endl;
+  std::cout << "function: " << m_FunctionName << std::endl;
+}
+
+void NormalFunction::printInfo(){
+  std::cout << "rangeMin: " << m_RMin << std::endl;
+  std::cout << "rangeMax: " << m_RMax << std::endl;
+  std::cout << "StdDiv: " << m_stddev << std::endl;
+  std::cout << "Mean: " << m_mean << std::endl;
   std::cout << "integral: " << m_Integral << ", calculated using " << m_IntDiv << " divisions" << std::endl;
   std::cout << "function: " << m_FunctionName << std::endl;
 }
