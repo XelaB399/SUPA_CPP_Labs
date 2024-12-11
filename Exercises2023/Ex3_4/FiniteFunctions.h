@@ -25,8 +25,12 @@ public:
   
   //Plot the supplied data points (either provided data or points sampled from function) as a histogram using NBins
   void plotData(std::vector<double> &points, int NBins, bool isdata=true); //NB! use isdata flag to pick between data and sampled distributions
+  
+
   virtual void printInfo(); //Dump parameter info about the current function (Overridable)
   virtual double callFunction(double x); //Call the function with value x (Overridable)
+
+  void metropolisSampling(int numSamples, float proposalStd);
 
   //Protected members can be accessed by child classes but not users
 protected:
@@ -85,23 +89,48 @@ class CauchyLorentzFunction : public FiniteFunction {
 public:
     //Constructors
     CauchyLorentzFunction(); // Default constructor
-    CauchyLorentzFunction(double min_range, double max_range, std::string outfile, double stddev, double mean); // Variable constructor 
+    CauchyLorentzFunction(double min_range, double max_range, double gamma, double x0, std::string outfile); // Variable constructor 
     
     //Setters
-    void setStdDev(std::vector<double> data, double mean);
-    void setMean(std::vector<double> data);
+    void setx0(double x0);
+    void setGamma(double gamma);
 
     virtual double callFunction(double x) override; // overriding the callFunction from FiniteFunction
     virtual void printInfo() override; // overriding the printInfo from FiniteFunction
 
     //Getters
-    double getStdDev();
-    double getMean();
+    double getX0();
+    double getGamma();
 
 protected:
-    double m_stddev;
-    double m_mean;
+    double m_x0;
+    double m_gamma;
 
 private:
-    double normalDistribution(double x);
+    double cauchylorentzDistribution(double x);
+};
+
+
+
+class NegativeCrystalBallFunction : public NormalFunction {
+public:
+    NegativeCrystalBallFunction(); // Default constructor
+    NegativeCrystalBallFunction(double min_range, double max_range, std::string outfile, double alpha, double n, double stddev, double mean); // Parameterized constructor
+//   ~NegativeCrystalBallFunction(); //Destructor
+
+    void setAlpha(double alpha);
+    void setN(double n);
+
+    virtual double callFunction(double x) override; 
+    virtual void printInfo() override;
+
+    double getAlpha();
+    double getN();
+
+protected:
+    double m_alpha;
+    double m_n;
+  
+private:
+    double NegativeCrystalBallDistribution(double x);
 };

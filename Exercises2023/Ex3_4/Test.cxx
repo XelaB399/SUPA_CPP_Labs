@@ -31,23 +31,60 @@ int main() {
     }
     MysteryData.close();
     
+
+// Metropolis Sampling
+   FiniteFunction finiteFunction;
+   finiteFunction.setRangeMin(-10);
+   finiteFunction.setRangeMax(10);
+  // finiteFunction.metropolisSampling(1000, 1.49717);
+
 // Create a default FiniteFunction with no additions/changes to the default code
     FiniteFunction defaultFunction;
     defaultFunction.printInfo();
-    defaultFunction.setRangeMax(4);
-    defaultFunction.setRangeMin(-7);
+    defaultFunction.setRangeMax(14);
+    defaultFunction.setRangeMin(-17);
     defaultFunction.plotFunction();
+    defaultFunction.metropolisSampling(10000, 1.49717);
     defaultFunction.plotData(testData, 100, true);
 
 // Create a NormalFunction with no additions/changes to the default code
     NormalFunction NormalFunction;
     NormalFunction.printInfo();
-    NormalFunction.setRangeMax(4);
-    NormalFunction.setRangeMin(-7); 
+    NormalFunction.setRangeMax(14);
+    NormalFunction.setRangeMin(-17); 
     NormalFunction.setMean(testData);
     NormalFunction.setStdDev(testData, (NormalFunction.getMean())); 
     NormalFunction.plotFunction();
+    NormalFunction.metropolisSampling(10000, 1.49717);
     NormalFunction.plotData(testData, 100, true);
+
+// Create a CauchyLorentzFunction with no additions/changes to the default code
+    CauchyLorentzFunction CauchyLorentzFunction;
+    CauchyLorentzFunction.setRangeMax(14);
+    CauchyLorentzFunction.setRangeMin(-17);
+    CauchyLorentzFunction.setGamma(1.6);
+    CauchyLorentzFunction.setx0(-2);
+    CauchyLorentzFunction.printInfo();
+    CauchyLorentzFunction.plotFunction();
+    CauchyLorentzFunction.metropolisSampling(10000, 1.49717);
+    CauchyLorentzFunction.plotData(testData, 100, true);
+
+// Create a NegativeCrystalBallFunction with no additions/changes to the default code
+    NegativeCrystalBallFunction NegativeCrystalBallFunction;
+    NegativeCrystalBallFunction.setRangeMax(14);
+    NegativeCrystalBallFunction.setRangeMin(-17);
+    NegativeCrystalBallFunction.setMean(testData);
+    NegativeCrystalBallFunction.setStdDev(testData, (NegativeCrystalBallFunction.getMean()));
+    NegativeCrystalBallFunction.setAlpha(2.4);
+    NegativeCrystalBallFunction.setN(2);
+    NegativeCrystalBallFunction.printInfo();
+    NegativeCrystalBallFunction.plotFunction();
+    NegativeCrystalBallFunction.plotData(testData, 100, true);
+    NegativeCrystalBallFunction.metropolisSampling(10000, 1.49717);
+
+
+
+
 
     return(0);
 }
