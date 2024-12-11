@@ -41,8 +41,8 @@ int main() {
 // Create a default FiniteFunction with no additions/changes to the default code
     FiniteFunction defaultFunction;
     defaultFunction.printInfo();
-    defaultFunction.setRangeMax(14);
-    defaultFunction.setRangeMin(-17);
+    defaultFunction.setRangeMax(8);
+    defaultFunction.setRangeMin(-11);
     defaultFunction.plotFunction();
     defaultFunction.metropolisSampling(10000, 1.49717);
     defaultFunction.plotData(testData, 100, true);
@@ -50,8 +50,8 @@ int main() {
 // Create a NormalFunction with no additions/changes to the default code
     NormalFunction NormalFunction;
     NormalFunction.printInfo();
-    NormalFunction.setRangeMax(14);
-    NormalFunction.setRangeMin(-17); 
+    NormalFunction.setRangeMax(8);
+    NormalFunction.setRangeMin(-11); 
     NormalFunction.setMean(testData);
     NormalFunction.setStdDev(testData, (NormalFunction.getMean())); 
     NormalFunction.plotFunction();
@@ -60,8 +60,8 @@ int main() {
 
 // Create a CauchyLorentzFunction with no additions/changes to the default code
     CauchyLorentzFunction CauchyLorentzFunction;
-    CauchyLorentzFunction.setRangeMax(14);
-    CauchyLorentzFunction.setRangeMin(-17);
+    CauchyLorentzFunction.setRangeMax(8);
+    CauchyLorentzFunction.setRangeMin(-11);
     CauchyLorentzFunction.setGamma(1.6);
     CauchyLorentzFunction.setx0(-2);
     CauchyLorentzFunction.printInfo();
@@ -71,8 +71,8 @@ int main() {
 
 // Create a NegativeCrystalBallFunction with no additions/changes to the default code
     NegativeCrystalBallFunction NegativeCrystalBallFunction;
-    NegativeCrystalBallFunction.setRangeMax(14);
-    NegativeCrystalBallFunction.setRangeMin(-17);
+    NegativeCrystalBallFunction.setRangeMax(8);
+    NegativeCrystalBallFunction.setRangeMin(-11);
     NegativeCrystalBallFunction.setMean(testData);
     NegativeCrystalBallFunction.setStdDev(testData, (NegativeCrystalBallFunction.getMean()));
     NegativeCrystalBallFunction.setAlpha(2.4);
